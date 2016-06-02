@@ -1,6 +1,10 @@
 from SimpleCV import * ## Se cargan paquetes de SimpleCV en python
 import time ##importamos tiempo
 
+##
+## BLOBS
+##
+
 img=Image("foto555.jpg") ##Carga imagen en img
 (red, green, blue)=img.splitChannels(False) ## Separa los canales RGB de la imagen
 red.save("imgred.jpg") ## Se guarda canal rojo de la imagen 
@@ -38,39 +42,43 @@ blobs4.draw((200,0,0),width=3) ## se dibujan los grupos en la imagen binarizada
 img.addDrawingLayer(imggray1.dl()) ## se dibujan en la imagen original
 img.save("FBbingray.jpg") ## se guarda imagen original con la deteccion
 
-##Comando Blobs para color especifico con imagen invertida para imagen aplicada para canal verde
-img=Image("foto777.jpg") ##Carga imagen en img
-(red, green, blue)=img.splitChannels(False) ## Separa los canales RGB de la imagen
-imginvgreen2=green.invert() ## La imagen original se invierte
-greendist=imginvgreen2.colorDistance((65,32,32)) ## Calcula la distancia del color que se le da con respecto al color de cada pixel de la imagen y se invierte
-blobs5=greendist.findBlobs() ## Se buscan los grupos de pixeles
-blobs5.draw((200,0,0),width=3) ## Se dibujan los grupos en rojo sobre la imagen de tipo FeatureSet
-img.addDrawingLayer(greendist.dl()) ## se dibujan sobre la imagen original
-img.save("FBSCgreendistinv.jpg") ## se guarda imagen original con la deteccion
-##Comando Blobs para color especifico con imagen invertida para imagen aplicada para canal rojo
-img=Image("foto777.jpg") ##Carga imagen en img
-imginvred2=red.invert() ## La imagen original se invierte
-reddist=imginvred2.colorDistance((65,32,32)) ## Calcula la distancia del color que se le da con respecto al color de cada pixel de la imagen y se invierte
-blobs5=reddist.findBlobs() ## Se buscan los grupos de pixeles
-blobs5.draw((200,0,0),width=3) ## Se dibujan los grupos en rojo sobre la imagen de tipo FeatureSet
-img.addDrawingLayer(reddist.dl()) ## se dibujan sobre la imagen original
-img.save("FBSCreddistinv.jpg") ## se guarda imagen original con la deteccion
-##Comando Blobs para color especifico con imagen invertida para imagen aplicada para canal azul
-img=Image("foto777.jpg") ##Carga imagen en img
-imginvblue2=blue.invert() ## La imagen original se invierte
-bluedist=imginvblue2.colorDistance((65,32,32)) ## Calcula la distancia del color que se le da con respecto al color de cada pixel de la imagen y se invierte
-blobs5=bluedist.findBlobs() ## Se buscan los grupos de pixeles
-blobs5.draw((200,0,0),width=3) ## Se dibujan los grupos en rojo sobre la imagen de tipo FeatureSet
-img.addDrawingLayer(bluedist.dl()) ## se dibujan sobre la imagen original
-img.save("FBSCbluedistinv.jpg") ## se guarda imagen original con la deteccion
-##Comando Blobs para color especifico con imagen invertida para imagen aplicada para gris
-img=Image("foto777.jpg") ##Carga imagen en img
-imginvgray2=blue.grayscale() ## La imagen original se invierte
-graydist=imginvgray2.colorDistance((65,32,32)) ## Calcula la distancia del color que se le da con respecto al color de cada pixel de la imagen y se invierte
-blobs5=graydist.findBlobs() ## Se buscan los grupos de pixeles
-blobs5.draw((200,0,0),width=3) ## Se dibujan los grupos en rojo sobre la imagen de tipo FeatureSet
-img.addDrawingLayer(graydist.dl()) ## se dibujan sobre la imagen original
-img.save("FBSCgraydistinv.jpg") ## se guarda imagen original con la deteccion
+
+##
+##  COLOR DISTANCE CON BLOBS
+##
 
 
+##Comando Blobs para color especifico con imagen invertida para imagen original
+img=Image("foto555.jpg") ##Carga imagen en img
+imginvCS=img.invert() ## La imagen original se invierte
+imgdist=imginvCS.colorDistance((65,32,32)) ## Calcula la distancia del color que se le da con respecto al color de cada pixel de la imagen y se invierte
+blobs5=imgdist.findBlobs() ## Se buscan los grupos de pixeles
+blobs5.draw((200,0,0),width=3) ## Se dibujan los grupos en rojo sobre la imagen de tipo FeatureSet
+img.addDrawingLayer(imgdist.dl()) ## se dibujan sobre la imagen original
+img.save("FBSCimgdistinv.jpg") ## se guarda imagen original con la deteccion
 
+##
+##  CANNY
+##
+
+img=Image("foto555.jpg") ##Carga imagen en img
+(R,G,B)=img.splitChannels(False)
+imga=Image("mascara.png")
+imga.resize(img.width,img.height)
+## Canal Rojo
+imgedges1=R.edges(t1=20,t2=60)
+fin1=(imga*imgedges1)+img
+fin1.save("CanRoj.jpg")
+## Canal verde
+imgedges2=G.edges(t1=30,t2=150)
+fin2=(imga*imgedges2)+img
+fin2.save("CanVer.jpg")
+## Canal azul
+imgedges3=B.edges(400,0)
+fin3=(imga*imgedges3)+img
+fin3.save("CanAzu.jpg")
+## Escala de grises
+imggr=img.grayscale()
+imgedges4=imggr.edges(200,80)
+fin4=(imga*imgedges4)+img
+fin4.save("Cangris.jpg")
