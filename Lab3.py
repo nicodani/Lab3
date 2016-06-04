@@ -1,11 +1,11 @@
 from SimpleCV import * ## Se cargan paquetes de SimpleCV en python
 import time ##importamos tiempo
 
-##
-## BLOBS
-##
 
-img=Image("foto555.jpg") ##Carga imagen en img
+## BLOBS
+
+
+img=Image("foto777.jpg") ##Carga imagen en img
 (red, green, blue)=img.splitChannels(False) ## Separa los canales RGB de la imagen
 red.save("imgred.jpg") ## Se guarda canal rojo de la imagen 
 green.save("imggreen.jpg") ## Se guarda canal verde de la imagen
@@ -49,7 +49,7 @@ img.save("FBbingray.jpg") ## se guarda imagen original con la deteccion
 
 
 ##Comando Blobs para color especifico con imagen invertida para imagen original
-img=Image("foto555.jpg") ##Carga imagen en img
+img=Image("foto111.jpg") ##Carga imagen en img
 imginvCS=img.invert() ## La imagen original se invierte
 imgdist=imginvCS.colorDistance((65,32,32)) ## Calcula la distancia del color que se le da con respecto al color de cada pixel de la imagen y se invierte
 blobs5=imgdist.findBlobs() ## Se buscan los grupos de pixeles
@@ -58,18 +58,33 @@ img.addDrawingLayer(imgdist.dl()) ## se dibujan sobre la imagen original
 img.save("FBSCimgdistinv.jpg") ## se guarda imagen original con la deteccion
 
 ##
+##  HUE DISTANCE CON BLOBS
+##
+
+
+##Comando Blobs para color especifico con imagen invertida para imagen original
+img=Image("foto111.jpg") ##Carga imagen en img
+imginvCS=img.invert() ## La imagen original se invierte
+imgdist=imginvCS.hueDistance((65,32,32)) ## Calcula la distancia del color que se le da con respecto al color de cada pixel de la imagen y se invierte
+blobs5=imgdist.findBlobs() ## Se buscan los grupos de pixeles
+blobs5.draw((200,0,0),width=3) ## Se dibujan los grupos en rojo sobre la imagen de tipo FeatureSet
+img.addDrawingLayer(imgdist.dl()) ## se dibujan sobre la imagen original
+img.save("FBSCimghuedistinv.jpg") ## se guarda imagen original con la deteccion
+
+
+##
 ##  CANNY
 ##
 
 img=Image("foto555.jpg") ##Carga imagen en img
 (R,G,B)=img.splitChannels(False)
-imga=Image("mascara.png")
-imga.resize(img.width,img.height)
+imga=Image("mascara.png") ## se carga una imagen roja para utilizar como marcador de borde
+imga.resize(img.width,img.height) ## Se cambia el tamaño del la imagen roja por el de la imagen en cuestion
 ## Canal Rojo
-imgedges1=R.edges(t1=20,t2=60)
-fin1=(imga*imgedges1)+img
-fin1.save("CanRoj.jpg")
-## Canal verde
+imgedges1=R.edges(t1=20,t2=60) ##se utiliza el algoritmo Canny
+fin1=(imga*imgedges1)+img ## seobtiene la imagen original con los bordes detectados de Canny
+fin1.save("CanRoj.jpg") ##se guarda la imagen
+## Canal verde y se repite el procedimiento descrito anteriormente
 imgedges2=G.edges(t1=30,t2=150)
 fin2=(imga*imgedges2)+img
 fin2.save("CanVer.jpg")
@@ -82,3 +97,4 @@ imggr=img.grayscale()
 imgedges4=imggr.edges(200,80)
 fin4=(imga*imgedges4)+img
 fin4.save("Cangris.jpg")
+
