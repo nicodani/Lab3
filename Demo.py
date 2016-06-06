@@ -2,6 +2,8 @@ from SimpleCV import Image, Display, Camera ## Se cargan paquetes de SimpleCV en
 import time ## se importa tiempo
 import numpy as np ## se importa paquete numpy de python
 
+## Deteccion por algoritmo profesor:
+
 def calcrho(A,B): ## Se crea una funcion que determine el rho 
     Ar=A[0]
     Ag=A[1]
@@ -82,6 +84,23 @@ for j in range(0,col-2):
             
 imgbor=Image(bor) ## se transforma la matriz con el borde a una imagen
 imgdet=img+imgbor ## se aplica el borde detectado a la imagen original
-imgfinal=img.sideBySide(imgbor.sideBySide(imgdet)) ## se junta a la imagen original(izq), con detector de borde(centro) e imagen con borde detectado (der).
-fot2=imgfinal.show() ## se muestra dicha imagen
+
+## Deteccion manual, findBlobs() sobre canal verde binarizado:
+img2=img
+(red, green, blue)=img.splitChannels(False) ## Separa los canales RGB de la imagen
+##Comando Blobs con binarize en imagen  aplicada con canal verde
+imginvgreen1=green.binarize() ## se convierte imagen a blanco y negro
+blobs1=imginvgreen1.findBlobs() ## se buscan los grupos de pixeles
+blobs1.draw((200,0,0),width=3) ## se dibujan los grupos en la imagen binarizada
+img2.addDrawingLayer(imginvgreen1.dl()) ## se dibujan en la imagen original
+
+fot2=img2.show() ## se muestra por 5 segundos imagen con deteccion manual
+time.sleep(5) 
+fot2.quit()
+imgfinal2=img.sideBySide(imgbor.sideBySide(imgdet))## se junta a la imagen original(izq), con detector de borde(centro) e imagen con borde detectado (der).
+fot3=imgfinal2.show() ## se muestra por 5 segundos dicha imagen
+
+
+
+
 
